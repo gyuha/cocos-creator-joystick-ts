@@ -21,6 +21,7 @@ export default class Joystick extends cc.Component {
 
   startPos: cc.Vec2 = null;
   stickPos: cc.Vec2 = null;
+  startMove: boolean = false;
   touchLocation: cc.Vec2 = null;
   radius: number = 0;
   joystickEvent: JoystickEvent;
@@ -63,21 +64,30 @@ export default class Joystick extends cc.Component {
   }
 
   onTouchStartEvent(event: cc.Event.EventTouch) {
-    this.joystickEvent.emit(
-      JoystickEventType.TOUCH_START,
-      'joystick touch start',
-      10
-    );
     const touchPos = this.node.convertToNodeSpaceAR(event.getLocation());
-
+    // 고정형 조이스틱일 경우
     if (this.joystickType === JoystickType.FIXED) {
       this.stickPos = this.ring.getPosition();
       const distance = touchPos.sub(this.ring.getPosition()).mag();
-      // this.radius > distance && this.dot.setPosition(touchPos);
-      this.dot.setPosition(touchPos);
+      if (this.radius < distance) {
+        this.startMove = false;
+        return;
+      }
+
+      this.startMove = true;
+      this.joystickEvent.emit(
+        JoystickEventType.TOUCH_START,
+        'joystick touch start',
+        10
+      );
+      this.ring.setPosition(this.startPos);
+      this.dot.setPosition(this.startPos);
       return;
     }
-    // JoystickType.FLLOW
+
+    // 이동형 조이스틱일 경우
+    this.startMove = true;
+
     this.stickPos = touchPos;
     this.node.opacity = 255;
     this.touchLocation = event.getLocation();
@@ -88,6 +98,9 @@ export default class Joystick extends cc.Component {
   }
 
   onTouchMoveEvent(event: cc.Event.EventTouch) {
+    if (this.startMove === false) {
+      return;
+    }
     // 터치 시작 위치와 같은 터치 이동, 이동 금지하는 경우
     if (
       this.joystickType === JoystickType.FOLLOW &&
@@ -134,6 +147,7 @@ export default class Joystick extends cc.Component {
   }
 
   onTouchEndEvent(event: cc.Event.EventTouch) {
+    this.startMove = false;
     this.dot.setPosition(this.ring.getPosition());
     if (this.joystickType === JoystickType.FOLLOW) {
       this.node.opacity = 0;

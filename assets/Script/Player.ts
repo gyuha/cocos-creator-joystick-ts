@@ -37,7 +37,6 @@ export default class NewClass extends cc.Component {
   }
 
   onTouchStart() {
-    console.log('start');
     return;
   }
 
