@@ -40,12 +40,12 @@ export default class NewClass extends cc.Component {
     return;
   }
 
-  onTouchMove(event, data: iTouchMove) {
+  onTouchMove(event: JoystickEventType, data: iTouchMove) {
     this.speedType = data.speedType;
     this.moveDir = data.moveDistance;
   }
 
-  onTouchEnd(event, data: iTouchMove) {
+  onTouchEnd(event: JoystickEventType, data: iTouchMove) {
     this.speedType = data.speedType;
   }
 
