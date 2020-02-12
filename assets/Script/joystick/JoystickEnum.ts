@@ -10,10 +10,12 @@ const SpeedType = cc.Enum({
 });
 
 const JoystickEventType = cc.Enum({
-  TOUCH_START: "touchStart",
-  TOUCH_MOVE: "touchMove",
-  TOUCH_END: "touchEnd",
-  CHANGE_JOYSTICK_TYPE: "changeJoystickType"
+  TOUCH_START: 'touchStart',
+  TOUCH_MOVE: 'touchMove',
+  TOUCH_END: 'touchEnd',
+
+  CHANGE_JOYSTICK_TYPE: 'changeJoystickType'
 });
 
 export { JoystickType, SpeedType, JoystickEventType };
+

@@ -1,4 +1,4 @@
-import { Singleton } from "../Singleton";
+import { Singleton } from '../Singleton';
 export class JoystickEvent extends Singleton<JoystickEvent> {
   event: cc.EventTarget = null;
 
@@ -18,6 +18,6 @@ export class JoystickEvent extends Singleton<JoystickEvent> {
   }
 
   public emit(eventType, ...arg) {
-    this.event.emit(eventType, arg);
+    this.event.emit(eventType, ...arg);
   }
 }

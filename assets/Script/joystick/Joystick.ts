@@ -3,6 +3,11 @@ import { JoystickEvent } from './JoystickEvent';
 
 const { ccclass, property } = cc._decorator;
 
+export interface iTouchMove {
+  speedType: number;
+  moveDistance: cc.Vec2;
+}
+
 @ccclass
 export default class Joystick extends cc.Component {
   @property(cc.Node)
@@ -123,19 +128,19 @@ export default class Joystick extends cc.Component {
     this.joystickEvent.emit(JoystickEventType.TOUCH_MOVE, event, {
       speedType,
       moveDistance: p
-    });
+    } as iTouchMove);
   }
 
   onTouchEndEvent(event: cc.Event.EventTouch) {
-      this.dot.setPosition(this.ring.getPosition());
-      if (this.joystickType === JoystickType.FOLLOW) {
-          this.node.opacity = 0;
-      }
+    this.dot.setPosition(this.ring.getPosition());
+    if (this.joystickType === JoystickType.FOLLOW) {
+      this.node.opacity = 0;
+    }
 
-      this.joystickEvent.emit(JoystickEventType.TOUCH_END, event, {
-          speedType: SpeedType.STOP,
-          moveDistance: 0
-      })
+    this.joystickEvent.emit(JoystickEventType.TOUCH_END, event, {
+      speedType: SpeedType.STOP,
+      moveDistance: cc.v2(0, 0)
+    } as iTouchMove)
   }
 
   start() {
