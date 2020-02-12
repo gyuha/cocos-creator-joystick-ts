@@ -19,6 +19,7 @@ export default class Joystick extends cc.Component {
   @property({ type: JoystickType })
   joystickType = JoystickType.FIXED;
 
+  startPos: cc.Vec2 = null;
   stickPos: cc.Vec2 = null;
   touchLocation: cc.Vec2 = null;
   radius: number = 0;
@@ -31,6 +32,7 @@ export default class Joystick extends cc.Component {
 
   onLoad() {
     this.radius = this.ring.width / 2;
+    this.startPos = this.ring.getPosition();
     this.initTouchEvent();
     if (this.joystickType === JoystickType.FOLLOW) {
       this.node.opacity = 0;
@@ -149,7 +151,13 @@ export default class Joystick extends cc.Component {
 
   public onChangeJoystickType(type): void {
     this.joystickType = type;
-    this.node.opacity = type === JoystickType.FIXED ? 255 : 0;
+    if (type === JoystickType.FIXED) {
+      this.ring.setPosition(this.startPos);
+      this.dot.setPosition(this.startPos);
+      this.node.opacity = 255;
+      return;
+    }
+    this.node.opacity = 0;
   }
 
   // update (dt) {}
