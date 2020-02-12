@@ -5,7 +5,10 @@
     "target": "es5",
     "allowJs": true,
     "experimentalDecorators": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": [ "./src/typings", "./node_modules/@types"],
   },
   "exclude": [
     "node_modules",
